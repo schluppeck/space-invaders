@@ -9,9 +9,10 @@ require "src/Dependencies"
 local projectiles = {}
 local aliens = {}
 local ship  = {}
+local alienDirection = 'right' -- or left, down
+local alienMovementTimer = 0
 
 function love.load()
-    love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setTitle('Space Invaders')
 
     gFont =  love.graphics.newFont('font/PressStart2P.ttf',8)
@@ -42,9 +43,18 @@ end
 function love.update(dt)
     ship:update(dt, projectiles)
 
-    for _, projectile in pairs(projectiles) do
+    for p_key, projectile in pairs(projectiles) do
        projectile:update(dt)
+       for a_key,alien in pairs(aliens) do 
+            if projectile:collides(alien) and not alien.invisible then
+                projectiles[p_key] = nil
+                alien.invisible = true
+            end
+       end
     end 
+
+    -- move aliens
+    tickAliens(dt)
 
     love.keyboard.keysPressed = {}
 end
@@ -84,4 +94,41 @@ function love.draw()
 
 
     push:finish()
+end
+
+-- logic for making aliens move down...
+function tickAliens(dt)
+    
+    alienMovementTimer = alienMovementTimer + dt
+
+    if alienMovementTimer >= ALIEN_MOVEMENT_INTERVAL then
+        if alienDirection == 'right' then
+            if aliens[FAR_RIGHT_ALIEN].x >= VIRTUAL_WIDTH - ALIEN_SIZE  then
+                alienDirection = 'left'
+            
+                for _, alien in pairs(aliens) do 
+                    alien.y = alien.y + ALIEN_STEP_HEIGHT
+                end
+            else
+
+                for _, alien in pairs(aliens) do 
+                    alien.x = alien.x + ALIEN_STEP_LENGTH
+                end
+
+            end
+        else
+            if aliens[FAR_LEFT_ALIEN].x <= 0  then
+                alienDirection = 'right'
+            
+                for _, alien in pairs(aliens) do 
+                    alien.y = alien.y + ALIEN_STEP_HEIGHT
+                end
+            else
+                for _, alien in pairs(aliens) do 
+                    alien.x = alien.x - ALIEN_STEP_LENGTH
+                end
+            end    
+        end
+        alienMovementTimer = alienMovementTimer - ALIEN_MOVEMENT_INTERVAL
+    end
 end

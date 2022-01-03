@@ -6,6 +6,16 @@ A workthrough of the Harvard CS50 course / twitch stream
 
 https://www.youtube.com/watch?v=jsNqs-QVRxg
 
+## stage 3
+
+timestamp of [stream 2](https://www.youtube.com/watch?v=mr5XNN40JpU): 1h15m, 
+
+- shooting
+- collisions working 
+- moving aliens
+
+![](space-invaders-03.gif)
+
 ## stage 1
 
 ![](space-invaders-02.gif)
