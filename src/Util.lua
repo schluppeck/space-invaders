@@ -2,6 +2,9 @@
     util
     utility functions for game
 ]]
+
+love.graphics.setDefaultFilter('nearest', 'nearest')
+
 function GenerateQuads(texture, width, height)
     local quads = {}
     local textureWidth, textureHeight = texture:getWidth(), texture:getHeight()

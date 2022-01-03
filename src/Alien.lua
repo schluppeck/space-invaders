@@ -7,7 +7,6 @@
 
 Alien = Class{__includes = Entity}
 
-function Alien:update(dt)
+function Alien:update()
 
 end
-

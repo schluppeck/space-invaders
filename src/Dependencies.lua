@@ -4,9 +4,10 @@
 Class = require('lib/class')
 push = require('lib/push')
 
+require 'src/Entity'
 require 'src/Alien'
 require 'src/constants'
-require 'src/Entity'
+require 'src/Projectile'
 require 'src/Ship'
 require 'src/Util'
 

@@ -4,12 +4,21 @@ using `love2d` in `lua`
 
 A workthrough of the Harvard CS50 course / twitch stream
 
-**current state**
-
 https://www.youtube.com/watch?v=jsNqs-QVRxg
+
+## stage 1
+
+![](space-invaders-02.gif)
+
+**current state** at twitch stream where projectiles are just about functionals. Getting a bit more modular by breaking things up into `Alien`, `Projectile`, `Ship` and `Util`... etc.
+
+Game logic simple and physics basic (no acceleration, alien movement, collisions..)
+
+## stage 0
 
 ![](retro-01.png)
 
-getting some awesome 8bit aesthetic from random sprite generator
+getting some awesome 8bit aesthetic from random sprite generator hosted [at this website](http://img.uninhabitant.com/spritegen.html)
 
 ![](graphics/aliens12.png)
+
