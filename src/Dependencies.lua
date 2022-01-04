@@ -19,3 +19,9 @@ gTextures = {
 gFrames = {
     ['aliens'] = GenerateQuads(gTextures['aliens'],ALIEN_SIZE,ALIEN_SIZE)
 }
+
+gSounds = {
+    ['laser'] = love.audio.newSource('sounds/laser.wav', 'static'),
+    ['laser_alien'] = love.audio.newSource('sounds/laser_alien_22.wav', 'static'),
+    ['explosion'] = love.audio.newSource('sounds/explosion.wav', 'static')
+}

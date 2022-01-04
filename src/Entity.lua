@@ -11,6 +11,7 @@ function Entity:init(x,y,sprite)
   self.height = ALIEN_SIZE
   self.sprite = sprite   
   self.invisible = false
+  self.canFire = false
 end
 
 function Entity:render()

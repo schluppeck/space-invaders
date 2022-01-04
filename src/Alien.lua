@@ -7,6 +7,7 @@
 
 Alien = Class{__includes = Entity}
 
-function Alien:update()
+function Alien:update(dt)
+    -- allow aliens to shoot
 
 end

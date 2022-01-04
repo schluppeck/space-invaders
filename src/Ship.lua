@@ -21,6 +21,8 @@ function Ship:update(dt, projectiles)
     if love.keyboard.wasPressed('space') then
         -- shoot from ship.x, ship.y with vel
         table.insert(projectiles, Projectile(self.x + SHIP_SIZE/2, self.y - PROJECTILE_LENGTH, 'up'))
+        gSounds['laser']:stop()
+        gSounds['laser']:play()
     end
 
 end

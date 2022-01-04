@@ -27,12 +27,20 @@ function love.load()
 
     ship = Ship(VIRTUAL_WIDTH/2 - ALIEN_SIZE/2,
                 VIRTUAL_HEIGHT - 32, SHIP_ID)
+    ship.canFire = true -- make sure ship can fire
 
-
-    for y = 0,ALIENS_TALL-1 do 
+    for y = 0, ALIENS_TALL-1 do 
         for x = 0, ALIENS_WIDE-1 do 
-            table.insert(aliens, Alien(x * ALIEN_SIZE, y * ALIEN_SIZE, 
-            math.random(N_ALIENS)))
+            local alien = Alien(x * ALIEN_SIZE, y * ALIEN_SIZE, 
+            math.random(N_ALIENS))
+            
+            if y == ALIENS_TALL-1 then
+                alien.canFire = true
+                alien.fireTimer = 0
+                alien.fireInterval = math.random(ALIEN_FIRE_INTERVAL)
+            end
+
+            table.insert(aliens, alien)
         end
     end
 
@@ -43,15 +51,25 @@ end
 function love.update(dt)
     ship:update(dt, projectiles)
 
+
     for p_key, projectile in pairs(projectiles) do
-       projectile:update(dt)
-       for a_key,alien in pairs(aliens) do 
-            if projectile:collides(alien) and not alien.invisible then
-                projectiles[p_key] = nil
-                alien.invisible = true
+        projectile:update(dt)
+
+        -- if projectiles go off screen, remove
+        -- otherwise check if collision w/ alien.
+        if projectile.y < -PROJECTILE_LENGTH then 
+            projectiles[p_key] = nil
+        else
+            for a_key,alien in pairs(aliens) do 
+                if projectile:collides(alien) and not alien.invisible then
+                    projectiles[p_key] = nil
+                    gSounds['explosion']:stop()
+                    gSounds['explosion']:play()
+                    alien.invisible = true
+                end
             end
-       end
-    end 
+        end
+    end
 
     -- move aliens
     tickAliens(dt)
@@ -80,7 +98,7 @@ function love.draw()
     
     love.graphics.clear(BG_COLOR_R,BG_COLOR_G,BG_COLOR_B,1)
 
-    ship:render()
+    love.graphics.print("#projectiles: " .. tostring(#projectiles))
 
     -- draw all projectiles
     for _, projectile in pairs(projectiles) do 
@@ -92,13 +110,37 @@ function love.draw()
         alien:render()
     end
 
-
+    ship:render()
     push:finish()
 end
 
 -- logic for making aliens move down...
 function tickAliens(dt)
     
+    for _, alien in pairs(aliens) do
+        if not alien.invisible then
+            if alien.canFire then
+                alien.fireTimer = alien.fireTimer + dt
+
+                if alien.fireTimer >= alien.fireInterval then
+                    alien.fireTimer = alien.fireTimer - alien.fireInterval
+                    alien.fireInterval = math.random(ALIEN_FIRE_INTERVAL)
+                    
+                    gSounds['laser_alien']:stop()
+                    gSounds['laser_alien']:play()
+                    
+                    
+                    table.insert(projectiles,
+                                Projectile(
+                                    alien.x, 
+                                    alien.y + alien.height + ALIEN_STEP_HEIGHT,
+                                    'down'))
+                end
+            end
+        end
+    end
+
+
     alienMovementTimer = alienMovementTimer + dt
 
     if alienMovementTimer >= ALIEN_MOVEMENT_INTERVAL then
