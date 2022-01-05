@@ -5,8 +5,6 @@
 
 GameOverState = Class{__includes = BaseState}
 
-TitleState = Class{__includes = BaseState}
-
 function GameOverState:update(dt) 
     if love.keyboard.wasPressed('enter') or
         love.keyboard.wasPressed('return') then

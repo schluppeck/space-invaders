@@ -20,6 +20,7 @@ require 'src/states/GameOverState'
 
 love.graphics.setDefaultFilter('nearest', 'nearest')
 
+
 gTextures = {
     ['aliens'] = love.graphics.newImage('graphics/aliens12.png')
 }

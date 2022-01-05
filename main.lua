@@ -25,22 +25,28 @@ function love.load()
     -- set up state machine
 
     gStateMachine = StateMachine {
-        ['title-seq'] = function() return TitleState() end,
+        
+        ['title'] = function() return TitleState() end,
         ['play'] = function() return PlayState() end,
         ['game-over'] = function() return GameOverState() end
     }
 
-    gStateMachine:change('title-seq')
+    gStateMachine:change('title')
 
     love.keyboard.keysPressed = {}
 end
 
 function love.update(dt)
+
     gStateMachine:update(dt)
 
     love.keyboard.keysPressed = {}
 end
- 
+
+function love.resize(w,h)
+    push:resize(w,h)
+end
+
 function love.keypressed(key)
  
     if key == 'escape' then
